@@ -1,25 +1,26 @@
 import fastify, { FastifyError } from "fastify";
+
 import { CustomError } from "./error/customError";
 import { NotFoundError } from "./error/notFoundError";
 import route from "./route/pokespeare";
 
-const testingEnv = process.env.TESTING
+const testingEnv = process.env.TESTING;
 
 // the logger is deactivated during testing
 const logger = () => {
-    if(testingEnv) {
+    if (testingEnv) {
         const testing = Number.parseInt(testingEnv);
 
-        if(testing != undefined && testing == 1) {
+        if (testing != undefined && testing == 1) {
             return false;
         }
         return true;
     }
 
     return true;
-}
+};
 const app = fastify({
-   logger: logger(),
+    logger: logger(),
 });
 
 app.setNotFoundHandler((request, reply) => {

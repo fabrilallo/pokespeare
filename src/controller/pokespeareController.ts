@@ -1,10 +1,12 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import got from "got";
+
 import { BadFormatError } from "../error/badFormatError";
 import { InternalError } from "../error/internalError";
 import { NotFoundError } from "../error/notFoundError";
 import { RateLimitError } from "../error/rateLimitError";
 import { isNumeric } from "../utility/utility";
+
 import { ResponsePokemonDescription, ResponseShakespeareTranslation } from "./typings/types";
 
 const DEFAULT_GOT_TIMEOUT = 30000;
@@ -15,7 +17,7 @@ export async function getPokespeareController(
 ): Promise<void> {
     const pokemonName = request.params.name;
     if (isNumeric(pokemonName)) {
-        throw new BadFormatError("Pokemon name must be a string", {});
+        throw new BadFormatError("Pokemon name must be a string", { pokemonName });
     }
     const pokemonDescsResponse = await got.get<ResponsePokemonDescription>(
         `https://pokeapi.co/api/v2/pokemon-species/${pokemonName}`,
@@ -53,12 +55,12 @@ function handleShakespeareApiErrors(statusCode: number, logInfo: Record<string, 
         throw new NotFoundError("Shakespearean description not found", logInfo);
     } else if (statusCode === 400) {
         throw new InternalError(
-            "The pokemon description is badly formatted so we couldn't retrieve it.",
+            "The pokemon description is badly formatted so we couldn't retrieve its description in shakespearean style",
             logInfo,
         );
     } else if (statusCode === 429) {
         throw new RateLimitError("Too many requests. Try again later", logInfo);
-    } else if (statusCode !== 200) {
+    } else {
         throw new InternalError(
             "Error translating in a shakespearean style the pokemon description",
             logInfo,
@@ -69,6 +71,10 @@ function handleShakespeareApiErrors(statusCode: number, logInfo: Record<string, 
 function handlePokèApiErrors(statusCode: number, logInfo: Record<string, unknown>): void {
     if (statusCode === 404) {
         throw new NotFoundError("Pokemon not found", logInfo);
+    } else if (statusCode === 400) {
+        throw new BadFormatError("The pokemon name is badly formatted", logInfo);
+    } else if (statusCode === 429) {
+        throw new RateLimitError("Too many requests. Try again later", logInfo);
     } else {
         throw new InternalError("Error getting the pokemon description", logInfo);
     }

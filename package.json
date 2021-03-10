@@ -7,6 +7,8 @@
     "license": "MIT",
     "scripts": {
         "build": "tsc -b -v tsconfig.build.json",
+        "lint": "eslint src --ext .ts --format unix",
+        "lint:fix": "yarn lint --fix",
         "start:dev": "ts-node-dev --transpile-only --ignore-watch node_modules src/index.ts",
         "start": "ts-node src/index.ts",
         "test": "TESTING=1 tap -Rspec test"
@@ -23,6 +25,7 @@
         "eslint": "^7.21.0",
         "eslint-config-prettier": "^8.1.0",
         "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-prettier": "^3.3.1",
         "nvm": "^0.0.4",
         "prettier": "^2.2.1",
         "tap": "^14.11.0",
