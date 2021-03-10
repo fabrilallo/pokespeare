@@ -1,0 +1,4 @@
+color: true
+coverage: false
+files:
+  - test/**/*.test.ts
