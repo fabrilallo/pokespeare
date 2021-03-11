@@ -1,4 +1,4 @@
-import { beforeEach, test } from "tap";
+import { test } from "tap";
 
 import app from "../src/app";
 
