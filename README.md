@@ -1,8 +1,10 @@
-# What's Pokeaspeare
+# What's Pokespeare
 This is a project about REST API, that given a pokemon name, returns its Shakespearean description.
 
 
 # Project decisions
+The development of the project was organized in a sprint following the SCRUM methodology and the tool used for the project management is `Jira`.
+
 Currently, there is only one endpoint that returns the description for the pokemon of **ruby** generation.
 The tech stack used is based on **Node.js** and **Typescript** because Node.js offers a rich ecosystem of libraries and frameworks to develop a web server.
 The framework used to develop the server is `fastify` and it's one of the fastest and lowest overhead web frameworks for Node.js. It comes with built-in logging and types so it's a good choice for typescript.
