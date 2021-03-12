@@ -1,5 +1,4 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import got from "got";
 
 import { BadFormatError } from "../error/badFormatError";
 import { InternalError } from "../error/internalError";
@@ -7,9 +6,8 @@ import { NotFoundError } from "../error/notFoundError";
 import { RateLimitError } from "../error/rateLimitError";
 import { isNumeric } from "../utility/utility";
 
-import { ResponsePokemonDescription, ResponseShakespeareTranslation } from "./typings/types";
-
-const DEFAULT_GOT_TIMEOUT = 30000;
+import { makeHttpRequest } from "./httpClient";
+import { ResponsePokemonDescription, ResponseShakespeareTranslation } from "./typings/pokespeare";
 
 export async function getPokespeareController(
     request: FastifyRequest<{ Params: { name: string } }>,
@@ -19,32 +17,45 @@ export async function getPokespeareController(
     if (isNumeric(pokemonName)) {
         throw new BadFormatError("Pokemon name must be a string", { pokemonName });
     }
-    const pokemonDescsResponse = await got.get<ResponsePokemonDescription>(
-        `https://pokeapi.co/api/v2/pokemon-species/${pokemonName}`,
-        { timeout: DEFAULT_GOT_TIMEOUT, responseType: "json", throwHttpErrors: false },
-    );
+
+    const pokèBaseUrl = process.env.POKE_BASE_URL;
+    const shakespeareBaseUrl = process.env.SHAKESPEARE_BASE_URL;
+
+    if (!pokèBaseUrl) {
+        throw new InternalError("The server is missing some configs", {});
+    }
+
+    if (!shakespeareBaseUrl) {
+        throw new InternalError("The server is missing some configs", {});
+    }
+    const pokemonDescsResponse = await makeHttpRequest<ResponsePokemonDescription>(pokèBaseUrl, {
+        method: "GET",
+        path: `pokemon-species/${pokemonName}`,
+    });
 
     if (pokemonDescsResponse.statusCode !== 200) {
-        handlePokèApiErrors(pokemonDescsResponse.statusCode, { pokemonName });
+        handlePokèApiErrors(pokemonDescsResponse.statusCode, { pokemonDescsResponse });
     }
+
     const rubyDescriptions = pokemonDescsResponse.body.flavor_text_entries.filter((entry) => {
         return entry.language.name === "en" && entry.version.name === "ruby";
     });
+
     const cleanDescription = rubyDescriptions[0].flavor_text.replace(/[\n\r\f]/g, "");
 
-    const encodedText = encodeURI(cleanDescription);
-    const translationResponse = await got.get<ResponseShakespeareTranslation>(
-        `https://api.funtranslations.com/translate/shakespeare.json?text=${encodedText}`,
-        { timeout: DEFAULT_GOT_TIMEOUT, responseType: "json", throwHttpErrors: false },
+    const translationResponse = await makeHttpRequest<ResponseShakespeareTranslation>(
+        shakespeareBaseUrl,
+        {
+            method: "GET",
+            path: "translate/shakespeare.json",
+            queryParams: { text: cleanDescription },
+        },
     );
 
     if (translationResponse.statusCode !== 200) {
-        handleShakespeareApiErrors(translationResponse.statusCode, {
-            pokemonName,
-            cleanDescription,
-            encodedText,
-        });
+        handleShakespeareApiErrors(translationResponse.statusCode, { pokemonDescsResponse });
     }
+
     reply
         .code(200)
         .send({ name: pokemonName, description: translationResponse.body.contents.translated });

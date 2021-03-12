@@ -10,7 +10,7 @@
         "lint": "eslint src --ext .ts --format unix",
         "lint:fix": "yarn lint --fix",
         "start:dev": "ts-node-dev --transpile-only --ignore-watch node_modules src/index.ts",
-        "start": "ts-node src/index.ts",
+        "start": "node build/src/index.js",
         "test": "TESTING=1 tap -Rspec test"
     },
     "tap": {
@@ -29,11 +29,11 @@
         "nvm": "^0.0.4",
         "prettier": "^2.2.1",
         "tap": "^14.11.0",
-        "ts-node": "^9.1.1",
         "ts-node-dev": "^1.1.6",
         "typescript": "^4.2.3"
     },
     "dependencies": {
+        "dotenv": "^8.2.0",
         "fastify": "^3.13.0",
         "got": "^11.8.2"
     }

@@ -1,3 +1,7 @@
+import dotenv from "dotenv";
+
+// needed for local development with .env files
+dotenv.config();
 import app from "./app";
 
 const HOST = process.env.HOST || "0.0.0.0";

@@ -1,0 +1,4 @@
+POKE_BASE_URL=pokebaseurl
+SHAKESPEARE_BASE_URL=shakespearebaseurl
+HOST=0.0.0.0
+PORT=8080
