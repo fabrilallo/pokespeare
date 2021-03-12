@@ -4,15 +4,16 @@ This is a project about REST API, that given a pokemon name, returns its Shakesp
 
 # Project decisions
 The development of the project was organized in a sprint following the SCRUM methodology and the tool used for the project management is `Jira`.
+Every branch corresponds to a story created in Jira.
 
 Currently, there is only one endpoint that returns the description for the pokemon of **ruby** generation.
 The tech stack used is based on **Node.js** and **Typescript** because Node.js offers a rich ecosystem of libraries and frameworks to develop a web server.
 The framework used to develop the server is `fastify` and it's one of the fastest and lowest overhead web frameworks for Node.js. It comes with built-in logging and types so it's a good choice for typescript.
-The entry point of the application is located in the root and it's the `index.ts` file where the server gets started.
+The entry point of the server is located in the root and it's the `index.ts` file where the server gets started.
 
 The project is structured in 4 folders:
 - `route` contains all the routes of the server (in this case just one route)
-- `controller` contains all the controllers associated with the routes to handle the logic of the route
+- `controller` contains all the controllers associated with the routes to handle the logic of the route and an httpClient generic that makes http requests.
 - `error` contains all the error used in the project
 - `utility` currently contains just one file with a utility function
 
@@ -22,18 +23,17 @@ There are also e2e tests implemented and the library used is `tap` that offers s
 
 
 
-# How to start the application
+# How to start the server
 
-To start the application you need `Docker` to be installed (https://www.docker.com/products/docker-desktop).
+To start the server you need `Docker` and `docker-compose` to be installed (https://www.docker.com/products/docker-desktop  https://docs.docker.com/compose/install/).
+You also need to create an .env file with the needed env variables (check the `.env.example` file in the root). If you want to try the public version for Shakespeare Translator API and Pokè API you have to set:
+`POKE_BASE_URL=https://pokeapi.co/api/v2`
+`SHAKESPEARE_BASE_URL=https://api.funtranslations.com`
 
-Move to the root directory of the project and run:
-- `docker build --pull --rm -f ".Dockerfile" -t pokespeare:latest "."`
-- `docker run -p 8080:3000 pokespeare:latest`
+Now you're ready to run the server, so move to the root directory of the project and run:
+- `docker-compose up`
 
-If you want to try the application locally, the endpoint to be called is:
-
- **GET** `localhost:8080/pokemon/:pokemon_name`
-
+And the server is up :smile_cat:
 
 # Run the development environment
 
@@ -68,5 +68,5 @@ The project has also e2e tests and if you want to run it, you simply have to run
 - Add some form of cache to speed up the response elaboration
 - Add more tests mocking the Shakespeare Translation API and Pokè API responses
 - Integrate a monitoring tool to get metrics for the system
-- Make a docker file for the production
+- Make a docker file for the production (multi-stage and lean)
 - Add an open api document
