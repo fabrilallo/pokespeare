@@ -66,5 +66,5 @@ The project has also e2e tests and if you want to run it, you simply have to run
 - Add some form of cache to speed up the response elaboration
 - Add more tests mocking the Shakespeare Translation API and Pokè API responses
 - Integrate a monitoring tool to get metrics for the system
-- Make a docker file for the production (multi-stage and lean)
+- Make a docker file production-ready
 - Add an open api document
