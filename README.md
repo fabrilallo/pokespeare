@@ -25,6 +25,7 @@ There are also e2e tests implemented and the library used is `tap` that offers s
 
 To start the server you need `Docker` and `docker-compose` to be installed (https://www.docker.com/products/docker-desktop  https://docs.docker.com/compose/install/).
 You also need to create an .env file with the needed env variables (check the `.env.example` file in the root). If you want to try the public version for Shakespeare Translator API and Pokè API you have to set:
+
 `POKE_BASE_URL=https://pokeapi.co/api/v2`
 `SHAKESPEARE_BASE_URL=https://api.funtranslations.com`
 
