@@ -1,18 +1,15 @@
 FROM node:14
 
 # Create app directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # Install app dependencies
-COPY package.json ./
-COPY yarn.lock ./
-
-
-RUN yarn
-# If you are building your code for production
-
-# Bundle app source
 COPY . .
 
-EXPOSE 3000
+RUN yarn
+RUN yarn build
+
+# Bundle app source
+
+EXPOSE 8080
 CMD [ "yarn", "start" ]

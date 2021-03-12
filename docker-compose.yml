@@ -1,0 +1,10 @@
+version: "3"
+services:
+   pokespeare:
+        env_file:
+            - ./.env
+        build:
+            context: ./
+            dockerfile: $PWD/.Dockerfile
+        ports:
+            - "8080:8080"
