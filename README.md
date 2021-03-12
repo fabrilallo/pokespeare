@@ -21,8 +21,6 @@ There are also e2e tests implemented and the library used is `tap` that offers s
 
 **NOTE**: The project uses Shakespeare translator API (the public version) to get the Shakespearean description and it has 60 API calls a day with a distribution of 5 calls per hour, so you could get easily in a **rate limit error**
 
-
-
 # How to start the server
 
 To start the server you need `Docker` and `docker-compose` to be installed (https://www.docker.com/products/docker-desktop  https://docs.docker.com/compose/install/).
