@@ -1,3 +1,7 @@
+import dotenv from "dotenv";
+
+dotenv.config();
+
 import { test } from "tap";
 
 import app from "../src/app";
