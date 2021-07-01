@@ -10,7 +10,7 @@ export async function getPokespeareController(
 ): Promise<void> {
     const pokemonName = request.params.name;
     if (isNumeric(pokemonName)) {
-        throw new BadFormatError("Pokemon name must be a string", { pokemonName });
+        throw new BadFormatError("Pokemon name must be a string!", { pokemonName });
     }
 
     const pokemonDescription = await getPokemonDescription(pokemonName);
