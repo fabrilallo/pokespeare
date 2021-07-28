@@ -6,6 +6,7 @@ import { test } from "tap";
 
 import app from "../src/app";
 
+// TODO: make real tests mocking the api calls
 test("should return route a success response", async (t) => {
     const response = await app.inject({
         method: "GET",
